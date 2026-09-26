@@ -1,0 +1,1566 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# NEXUS CERTIFICATE PRO GENERATOR
+# Genere une licence professionnelle longue, structuree, anglophone + francophone,
+# applicable a Google, NVIDIA, et tout acteur majeur. Version 2.0.0.
+# Auteur : Aissa Mohammedi (DGK)
+
+import os
+import sys
+import json
+import time
+import hashlib
+import datetime
+
+VERSION = "2.0.0"
+AUTEUR = "Aissa Mohammedi"
+PSEUDO = "DGK"
+CONTACT = "awamomo646@outlook.com"
+LICENCE = "NEXUS-OPEN-2.0"
+JURIDICTION = "Quebec, Canada"
+
+PROJECT_DIR = os.path.join(os.path.expanduser("~"), "Documents", "nexus_license_pro")
+os.makedirs(PROJECT_DIR, exist_ok=True)
+
+F_LICENSE_FR = os.path.join(PROJECT_DIR, "LICENSE-NEXUS-OPEN-2.0-FR.txt")
+F_LICENSE_EN = os.path.join(PROJECT_DIR, "LICENSE-NEXUS-OPEN-2.0-EN.txt")
+F_NOTICE = os.path.join(PROJECT_DIR, "NOTICE.md")
+F_PATENTS = os.path.join(PROJECT_DIR, "PATENTS.md")
+F_TRADEMARK = os.path.join(PROJECT_DIR, "TRADEMARK.md")
+F_CONTRIBUTORS = os.path.join(PROJECT_DIR, "CONTRIBUTORS.md")
+F_GOVERNANCE = os.path.join(PROJECT_DIR, "GOVERNANCE.md")
+F_SECURITY = os.path.join(PROJECT_DIR, "SECURITY.md")
+F_ETHICS = os.path.join(PROJECT_DIR, "ETHICS.md")
+F_COMPLIANCE = os.path.join(PROJECT_DIR, "COMPLIANCE.md")
+F_CHANGELOG = os.path.join(PROJECT_DIR, "CHANGELOG.md")
+F_README = os.path.join(PROJECT_DIR, "README.md")
+F_HEADER_PY = os.path.join(PROJECT_DIR, "HEADER_PYTHON.txt")
+F_HEADER_JS = os.path.join(PROJECT_DIR, "HEADER_JAVASCRIPT.txt")
+F_HEADER_GO = os.path.join(PROJECT_DIR, "HEADER_GO.txt")
+F_HEADER_RUST = os.path.join(PROJECT_DIR, "HEADER_RUST.txt")
+F_HEADER_YAML = os.path.join(PROJECT_DIR, "HEADER_YAML.txt")
+F_HEADER_C = os.path.join(PROJECT_DIR, "HEADER_C.txt")
+F_K8S = os.path.join(PROJECT_DIR, "nexus-certified-service.yaml")
+F_DOCKER = os.path.join(PROJECT_DIR, "Dockerfile.certified")
+F_INDEX = os.path.join(PROJECT_DIR, "certificate.json")
+
+
+def log(msg):
+print("[NEXUS-PRO] " + msg)
+
+
+def ecrire(chemin, contenu):
+with open(chemin, "w", encoding="utf-8") as f:
+f.write(contenu)
+try:
+taille = os.path.getsize(chemin)
+except OSError:
+taille = 0
+log("Ecrit : " + os.path.basename(chemin) + " (" + str(taille) + " octets)")
+
+
+LICENSE_FR = """================================================================================
+LICENCE NEXUS-OPEN-2.0 — VERSION FRANCAISE OFFICIELLE
+================================================================================
+Titre complet : NEXUS Open Ethical Commercial License, version 2.0.0
+Nom court : NEXUS-OPEN-2.0
+Auteur : Aissa Mohammedi (DGK)
+Contact : awamomo646@outlook.com
+Juridiction : Quebec, Canada
+Date : 2026
+Empreinte : voir certificate.json (SHA-256)
+Langue de foi : Le texte francais et le texte anglais ont valeur egale.
+En cas de conflit d'interpretation, la version anglaise
+prevaut pour les usages internationaux, la version
+francaise prevaut pour les usages au Quebec et en France.
+================================================================================
+
+TABLE DES MATIERES
+------------------
+Preambule
+Definitions
+Article 1 - Concession de droits
+Article 2 - Conditions de redistribution
+Article 3 - Clause de paternite renforcee
+Article 4 - Clause Google LLC / Alphabet Inc.
+Article 5 - Clause NVIDIA CORPORATION
+Article 6 - Clause Meta Platforms Inc.
+Article 7 - Clause Amazon.com Inc.
+Article 8 - Clause Apple Inc.
+Article 9 - Clause Microsoft Corporation
+Article 10 - Clause OpenAI, Anthropic, et autres laboratoires d'IA
+Article 11 - Clause des Etats souverains et agences publiques
+Article 12 - Clause universitaire et recherche
+Article 13 - Clause militaire et surveillance
+Article 14 - Clause intelligence artificielle et donnees
+Article 15 - Clause protection des mineurs
+Article 16 - Clause environnementale et energetique
+Article 17 - Clause de non-concurrence deloyale
+Article 18 - Clause de brevets
+Article 19 - Clause de marques et noms commerciaux
+Article 20 - Clause de versement volontaire
+Article 21 - Clause de transparence algorithmique
+Article 22 - Clause de securite et vulnerabilites
+Article 23 - Clause de gouvernance du projet
+Article 24 - Clause de revue ethique
+Article 25 - Clause de conformite reglementaire
+Article 26 - Clause d'audit
+Article 27 - Clause d'arbitrage
+Article 28 - Clause de retrait de licence
+Article 29 - Clause de succession et heritage
+Article 30 - Non-garantie et limitation de responsabilite
+Annexe A - Formulaire de notification Google
+Annexe B - Formulaire de notification NVIDIA
+Annexe C - Modele d'audit ethique
+Annexe D - Liste des oeuvres tierces autorisees
+
+================================================================================
+PREAMBULE
+================================================================================
+
+Considerant que :
+
+(a) L'auteur original, Aissa Mohammedi, connu sous le pseudonyme DGK, a
+developpe une oeuvre logicielle, documentaire et protocolaire (ci-apres
+"l'Oeuvre") dans le but de servir l'interet general, la recherche, la
+science ouverte, et le developpement d'une technologie responsable ;
+
+(b) L'Oeuvre est publiee librement, mais son auteur refuse qu'elle soit
+utilisee pour des fins contraires a la dignite humaine, a la paix, a
+l'environnement, ou a la souverainete des peuples ;
+
+(c) Les grandes entreprises technologiques, notamment Google LLC,
+Alphabet Inc., NVIDIA CORPORATION, Meta Platforms Inc.,
+Amazon.com Inc., Apple Inc., Microsoft Corporation, ainsi que les
+laboratoires d'intelligence artificielle tels qu'OpenAI, Anthropic,
+et autres, concentrent une puissance economique, politique et
+technique qui exige des contreparties ethiques et financieres ;
+
+(d) Les utilisateurs finaux, les citoyens, les chercheurs et les
+etats ont le droit de savoir comment l'Oeuvre est utilisee, par
+qui, et dans quel but ;
+
+(e) La present licence vise a etablir un cadre juridique clair,
+executif, et moralement contraignant ;
+
+Il est convenu ce qui suit.
+
+================================================================================
+DEFINITIONS
+================================================================================
+
+Dans la presente licence, les termes suivants ont la signification ci-dessous :
+
+"Oeuvre" designe l'ensemble des fichiers source, binaires, scripts, schemas,
+specifications, documents, algorithmes, modeles, jeux de donnees, et tout
+autre artefact publie par l'Auteur sous NEXUS-OPEN-2.0.
+
+"Utilisateur" designe toute personne physique ou morale qui accede, utilise,
+modifie, redistribue, execute, ou s'inspire de l'Oeuvre.
+
+"Derive" designe toute oeuvre produite a partir de l'Oeuvre, incluant
+modifications, extensions, traductions, compilations, integrations,
+et modeles d'intelligence artificielle entrainés ou affinés sur l'Oeuvre.
+
+"Utilisateur Commercial" designe tout Utilisateur qui tire un revenu
+direct ou indirect de l'Oeuvre ou d'un Derive.
+
+"Utilisateur Institutionnel" designe tout Utilisateur agissant pour une
+universite, un laboratoire public, une organisation non-gouvernementale,
+ou un organisme de recherche sans but lucratif.
+
+"Utilisateur Souverain" designe tout Etat, agence publique, ministere,
+administration, ou entite mandatée par un Etat.
+
+"Utilisation Militaire" designe toute utilisation de l'Oeuvre ou d'un
+Derive dans un systeme d'armement, de defense offensive, de
+cyberguerre, ou de ciblage automatise de personnes.
+
+"Surveillance de Masse" designe toute utilisation de l'Oeuvre ou
+d'un Derive pour collecter, analyser, ou exploiter des donnees
+personnelles a l'echelle d'une population sans motif judiciaire.
+
+"Model Card" designe la fiche descriptive obligatoire publiee avec
+tout modele d'intelligence artificielle, decrivant les donnees
+d'entrainement, les biais, les limites, et les usages interdits.
+
+================================================================================
+ARTICLE 1 — CONCESSION DE DROITS
+================================================================================
+
+1.1. Sous reserve du respect integral des articles 2 a 29 de la
+presente licence, l'Auteur concede a l'Utilisateur une licence
+mondiale, non-exclusive, non-transfereable, gratuite, pour :
+
+(a) utiliser l'Oeuvre ;
+(b) etudier et modifier l'Oeuvre ;
+(c) redistribuer l'Oeuvre et ses Derives, sous reserve
+des conditions de l'article 2.
+
+1.2. Cette concession est conditionnelle. Toute violation d'un
+seul article entraine la resiliation immediate de la licence
+pour l'Utilisateur concerne, sans mise en demeure prealable.
+
+1.3. La concession ne s'etend PAS aux brevets de l'Auteur
+(voir article 18), ni aux marques (article 19).
+
+================================================================================
+ARTICLE 2 — CONDITIONS DE REDISTRIBUTION
+================================================================================
+
+2.1. Toute redistribution du code source, complete ou partielle,
+sous forme originale ou modifiee, doit conserver :
+
+(a) le present fichier LICENSE-NEXUS-OPEN-2.0-FR.txt ou
+LICENSE-NEXUS-OPEN-2.0-EN.txt en entier, sans modification ;
+(b) la liste complete des conditions ;
+(c) l'avis de non-garantie (article 30) ;
+(d) la liste des modifications apportees, si Derive ;
+(e) l'empreinte SHA-256 de l'Oeuvre originale.
+
+2.2. Toute redistribution binaire doit reproduire les memes elements
+dans la documentation du produit, les credits affiches a
+l'utilisateur final, et un fichier ABOUT.md ou equivalent
+accessible dans l'application.
+
+2.3. Aucune redistribution ne peut retirer, masquer, ou alterer la
+mention de paternite de l'Auteur.
+
+================================================================================
+ARTICLE 3 — CLAUSE DE PATERNITE RENFORCEE
+================================================================================
+
+3.1. Le nom de l'Auteur doit apparaitre, sauf accord ecrit contraire,
+sous la forme exacte :
+
+"Aissa Mohammedi (DGK) — NEXUS-OPEN-2.0"
+
+3.2. Cette mention doit etre visible dans :
+
+(a) le code source, en en-tete de chaque fichier ;
+(b) le README du projet Derive ;
+(c) la page About, Credits, ou Legal de tout produit Derive ;
+(d) la documentation utilisateur ;
+(e) les presentations publiques, publiees ou orales, qui
+citent l'Oeuvre.
+
+3.3. Le fait de retirer volontairement cette mention constitue
+une violation grave de la presente licence.
+
+3.4. L'Auteur se reserve le droit de publier, sans recours
+juridique, la liste des entites ayant viole la clause 3.
+
+================================================================================
+ARTICLE 4 — CLAUSE GOOGLE LLC / ALPHABET INC.
+================================================================================
+
+4.1. Toute utilisation de l'Oeuvre ou d'un Derive par Google LLC,
+Alphabet Inc., ou toute filiale directe ou indirecte, doit :
+
+(a) mentionner "NEXUS-OPEN-2.0 / Aissa Mohammedi (DGK)" dans les
+credits produit, la page About, et le fichier LICENSE de
+tout produit qui utilise l'Oeuvre ;
+(b) publier la liste des composants utilises, avec version et
+empreinte SHA-256 ;
+(c) verser 0,5 % du revenu direct genere par tout produit
+utilisant l'Oeuvre a un fonds open source independant,
+choisi par l'Auteur, ou a defaut par un tiers neutre
+agrée (Software Freedom Conservancy, Free Software
+Foundation, ou equivalent) ;
+(d) publier annuellement un rapport de conformite accessible
+sans authentification.
+
+4.2. Google LLC ne peut pas revendiquer de brevet sur une
+amelioration derivee de l'Oeuvre sans accord ecrit
+prealable de l'Auteur.
+
+4.3. Google LLC ne peut pas utiliser l'Oeuvre dans un produit
+qui viole l'article 13 (militaire), 14 (IA et donnees),
+ou 15 (mineurs).
+
+4.4. Toute fusion, acquisition, ou restructuration de Google LLC
+ne libere pas l'entite successeure des obligations du
+present article.
+
+4.5. En cas de litige, le present article est interprete selon
+le droit du Quebec, Canada.
+
+================================================================================
+ARTICLE 5 — CLAUSE NVIDIA CORPORATION
+================================================================================
+
+5.1. Toute utilisation de l'Oeuvre ou d'un Derive par NVIDIA
+CORPORATION ou ses filiales doit :
+
+(a) conserver les en-tetes d'origine de la presente licence
+dans tout fichier Derive ;
+(b) publier sous licence equivalente toute modification
+apportee au code source Derive, dans un delai de
+90 jours apres mise en production ;
+(c) documenter publiquement les modifications, avec diff
+et justification technique ;
+(d) contribuer en retour au moins une amelioration par an
+au projet original, sous forme de pull request ou
+de don financier equivalent.
+
+5.2. NVIDIA CORPORATION ne peut pas utiliser le nom "NEXUS",
+"DGK", "Aissa Mohammedi", ni aucun nom derive, pour
+promouvoir un produit Derive sans accord ecrit prealable.
+
+5.3. NVIDIA CORPORATION ne peut pas reclamer de compatibilite,
+de certification, ou de partenariat avec l'Auteur sans
+contrat signe.
+
+5.4. NVIDIA CORPORATION ne peut pas incorporer l'Oeuvre dans
+ses bibliotheques CUDA, TensorRT, NIM, ou tout produit
+distribue sous licence proprietaire, sans accord ecrit.
+
+5.5. Toute distribution de binaire lie a l'Oeuvre doit inclure
+la presente licence dans un fichier NOTICE accessible.
+
+================================================================================
+ARTICLE 6 — CLAUSE META PLATFORMS INC.
+================================================================================
+
+6.1. Toute utilisation par Meta Platforms Inc., Facebook Inc.,
+Instagram LLC, WhatsApp LLC, ou toute filiale, doit :
+
+(a) respecter les articles 3 (paternite), 13 (militaire),
+14 (IA et donnees), et 15 (mineurs) ;
+(b) verser 0,5 % du revenu publicitaire genere par tout
+produit utilisant l'Oeuvre a un fonds open source
+independant ;
+(c) publier annuellement la liste des composants utilises
+et leur usage ;
+(d) ne pas utiliser l'Oeuvre pour la moderation automatisee
+de contenu sans audit ethique independant.
+
+================================================================================
+ARTICLE 7 — CLAUSE AMAZON.COM INC.
+================================================================================
+
+7.1. Toute utilisation par Amazon.com Inc., Amazon Web Services
+Inc., ou toute filiale, doit :
+
+(a) respecter les articles 3, 13, 14, et 15 ;
+(b) verser 0,5 % du revenu direct genere par tout service
+cloud utilisant l'Oeuvre a un fonds open source
+independant ;
+(c) publier la liste des services AWS utilisant l'Oeuvre.
+
+================================================================================
+ARTICLE 8 — CLAUSE APPLE INC.
+================================================================================
+
+8.1. Toute utilisation par Apple Inc. ou ses filiales doit :
+
+(a) respecter les articles 3, 13, 14, et 15 ;
+(b) ne pas utiliser l'Oeuvre dans un systeme de
+verification d'identite ou de reconnaissance
+faciale sans consentement eclaire ;
+(c) ne pas utiliser l'Oeuvre dans App Store Connect
+ou ses systemes de moderation sans audit.
+
+================================================================================
+ARTICLE 9 — CLAUSE MICROSOFT CORPORATION
+================================================================================
+
+9.1. Toute utilisation par Microsoft Corporation ou ses
+filiales doit :
+
+(a) respecter les articles 3, 13, 14, et 15 ;
+(b) ne pas utiliser l'Oeuvre dans GitHub Copilot,
+Azure AI, ou tout service d'IA generative sans
+publication de la source dans les Model Cards ;
+(c) verser 0,5 % du revenu genere par tout service
+utilisant l'Oeuvre a un fonds open source.
+
+================================================================================
+ARTICLE 10 — CLAUSE OPENAI, ANTHROPIC, ET AUTRES LABORATOIRES D'IA
+================================================================================
+
+10.1. Toute utilisation de l'Oeuvre pour l'entrainement, le
+fine-tuning, ou l'evaluation d'un modele d'intelligence
+artificielle doit :
+
+(a) citer la source dans les Model Cards publiees ;
+(b) ne pas reutiliser les donnees utilisateur sans
+consentement eclaire ;
+(c) respecter le RGPD (UE), le CCPA (Californie),
+la Loi 25 (Quebec), et toute legislation
+equivalente applicable ;
+(d) publier annuellement la liste des sources utilisees
+pour l'entrainement, avec empreintes SHA-256.
+
+10.2. Aucun modele derive ne peut etre utilise pour :
+
+(a) generer du contenu non consenti a caractere intime ;
+(b) cibler des personnes vulnerables (mineurs, personnes
+agees, personnes handicapees) ;
+(c) automatiser la desinformation a grande echelle ;
+(d) usurper l'identite d'une personne reelle sans son
+accord ecrit.
+
+================================================================================
+ARTICLE 11 — CLAUSE DES ETATS SOUVERAINS ET AGENCES PUBLIQUES
+================================================================================
+
+11.1. Les Etats souverains, agences publiques, ministeres, et
+administrations peuvent utiliser l'Oeuvre sous reserve
+de respecter les articles 13 (militaire) et 14 (IA).
+
+11.2. L'utilisation par une agence de renseignement, de
+securite nationale, ou de police doit etre notifiee
+publiquement, sauf contrainte legale imperative.
+
+11.3. Les Etats ne peuvent pas utiliser l'Oeuvre pour :
+
+(a) surveiller leurs propres citoyens sans mandat
+judiciaire ;
+(b) poursuivre des journalistes, des chercheurs, ou
+des dissidents politiques ;
+(c) cibler des minorites ethniques, religieuses,
+ou sexuelles.
+
+================================================================================
+ARTICLE 12 — CLAUSE UNIVERSITAIRE ET RECHERCHE
+================================================================================
+
+12.1. L'usage academique, scientifique, pedagogique et de
+recherche est autorise sans restriction, sans redevance,
+sans citation obligatoire au-dela de la citation
+scientifique standard.
+
+12.2. Les etudiants, chercheurs, enseignants et laboratoires
+publics peuvent modifier, redistribuer et publier
+l'Oeuvre librement, a condition de conserver la mention
+de paternite dans le code source.
+
+12.3. Les entreprises privees qui financent la recherche
+universitaire restent soumises aux articles 4 a 10
+si elles utilisent l'Oeuvre a des fins commerciales.
+
+================================================================================
+ARTICLE 13 — CLAUSE MILITAIRE ET SURVEILLANCE
+================================================================================
+
+13.1. Toute utilisation de l'Oeuvre dans :
+
+(a) un systeme d'armement autonome ou semi-autonome ;
+(b) un systeme de surveillance de masse ;
+(c) un systeme de repression politique, religieuse, ou
+ethnique ;
+(d) un systeme de ciblage militaire automatise ;
+(e) un systeme de desinformation militaire ;
+
+est INTERDITE.
+
+13.2. Toute violation de l'article 13 rend la licence
+immediatement nulle pour le contrevenant, sans mise
+en demeure prealable.
+
+13.3. L'Auteur se reserve le droit de publier, sans recours
+juridique, la liste des entites ayant viole cet
+article.
+
+13.4. Les projets civils a double usage doivent faire l'objet
+d'un audit ethique independant publie.
+
+================================================================================
+ARTICLE 14 — CLAUSE INTELLIGENCE ARTIFICIELLE ET DONNEES
+================================================================================
+
+(voir article 10 pour les laboratoires d'IA, cet article
+generalise aux usages)
+
+14.1. Toute utilisation de l'Oeuvre pour l'entrainement,
+l'evaluation, ou l'inference d'un modele d'IA doit
+publier :
+
+(a) la liste des donnees d'entrainement ;
+(b) les biais identifies ;
+(c) les limites connues ;
+(d) les usages interdits.
+
+14.2. Aucun modele derive ne peut etre deploye sans :
+
+(a) une Model Card publique ;
+(b) une politique d'usage acceptable ;
+(c) un mecanisme de signalement accessible.
+
+14.3. Les donnees personnelles traitees par un modele
+derive doivent respecter les principes de minimisation,
+de finalite, de transparence, et de securite.
+
+================================================================================
+ARTICLE 15 — CLAUSE PROTECTION DES MINEURS
+================================================================================
+
+15.1. Aucune utilisation de l'Oeuvre ne peut cibler
+directement ou indirectement des personnes de moins
+de 16 ans sans le consentement explicite d'un parent
+ou tuteur legal.
+
+15.2. Aucun modele derive ne peut etre entraine ou affiné
+sur des donnees d'enfants sans audit ethique publie.
+
+15.3. Aucune interface utilisateur derivee ne peut utiliser
+des mecanismes de dependance, de manipulation, ou
+d'exploitation psychologique des mineurs.
+
+================================================================================
+ARTICLE 16 — CLAUSE ENVIRONNEMENTALE ET ENERGETIQUE
+================================================================================
+
+16.1. Toute utilisation de l'Oeuvre a grande echelle doit
+publier son empreinte carbone annuelle.
+
+16.2. Les utilisateurs commerciaux s'engagent a reduire
+leur consommation energetique liee a l'Oeuvre d'au
+moins 5 % par an.
+
+16.3. Aucune utilisation ne peut etre faite dans un projet
+dont l'empreinte energetique est jugee excessive par
+un audit independant.
+
+================================================================================
+ARTICLE 17 — CLAUSE DE NON-CONCURRENCE DELOYALE
+================================================================================
+
+17.1. Toute entite utilisant l'Oeuvre ne peut pas :
+
+(a) deposer un brevet couvrant une fonctionnalite
+presente dans l'Oeuvre originale ;
+(b) poursuivre un utilisateur independant pour usage
+identique ;
+(c) bloquer la redistribution du code modifie sous
+pretexte de compatibilite, de securite, ou de
+stabilite.
+
+17.2. Toute tentative de contournement des articles 4 a 10
+ou 17 rend la licence nulle pour l'entite concernee.
+
+================================================================================
+ARTICLE 18 — CLAUSE DE BREVETS
+================================================================================
+
+18.1. Aucune licence de brevet, expresse ou implicite, n'est
+cedee par la presente publication.
+
+18.2. Toute entite utilisant l'Oeuvre renonce, du fait de
+cette utilisation, a deposer un brevet couvrant une
+fonctionnalite presente dans l'Oeuvre originale.
+
+18.3. Si une entite intente une action en contrefacon de
+brevet contre l'Auteur ou contre un utilisateur de
+l'Oeuvre, la licence NEXUS-OPEN-2.0 dont beneficie
+cette entite est immediatement resiliee.
+
+================================================================================
+ARTICLE 19 — CLAUSE DE MARQUES ET NOMS COMMERCIAUX
+================================================================================
+
+19.1. Les noms "NEXUS", "NEXUS-OPEN", "DGK", "Aissa Mohammedi"
+sont des marques verbales de l'Auteur.
+
+19.2. Aucune utilisation commerciale de ces noms n'est
+autorisee sans accord ecrit prealable.
+
+19.3. L'usage descriptif (citer la source, faire reference
+a la licence) reste autorise.
+
+================================================================================
+ARTICLE 20 — CLAUSE DE VERSEMENT VOLONTAIRE
+================================================================================
+
+20.1. Les entreprises realisant plus de 100 millions USD de
+chiffre d'affaires annuel et utilisant l'Oeuvre sont
+invitees a verser une contribution volontaire de 1 %
+de leur budget R&D lie a des fonds open source
+independants.
+
+20.2. Cette clause n'est pas une obligation legale dans
+la plupart des juridictions. Elle est un engagement
+moral, et son respect public sera considere comme
+un signe de bonne foi.
+
+20.3. L'Auteur publiera annuellement la liste des
+entreprises ayant honore cette clause.
+
+================================================================================
+ARTICLE 21 — CLAUSE DE TRANSPARENCE ALGORITHMIQUE
+================================================================================
+
+21.1. Tout modele ou systeme derive de l'Oeuvre doit publier :
+
+(a) une description de son fonctionnement ;
+(b) ses criteres de decision ;
+(c) ses limites ;
+(d) les mecanismes de recours pour les personnes
+affectees.
+
+21.2. Aucune decision automatisée affectant des droits
+fondamentaux ne peut etre prise sans intervention
+humaine.
+
+================================================================================
+ARTICLE 22 — CLAUSE DE SECURITE ET VULNERABILITES
+================================================================================
+
+22.1. Toute personne decouvrant une vulnerabilite dans
+l'Oeuvre s'engage a la signaler a l'Auteur via
+awamomo646@outlook.com avant toute publication.
+
+22.2. L'Auteur s'engage a repondre dans un delai de 90
+jours.
+
+22.3. Aucune exploitation publique d'une vulnerabilite non
+corrigee n'est autorisee avant ce delai, sauf accord
+ecrit.
+
+================================================================================
+ARTICLE 23 — CLAUSE DE GOUVERNANCE DU PROJET
+================================================================================
+
+23.1. La gouvernance du projet NEXUS-OPEN-2.0 est assuree
+par l'Auteur et un comite consultatif benevole.
+
+23.2. Toute decision majeure (changement de licence,
+ajout de clause, modification structurelle) doit
+etre publiee 30 jours avant application.
+
+23.3. Les contributeurs peuvent proposer des amendements
+via pull request ; l'Auteur tranche en dernier
+ressort.
+
+================================================================================
+ARTICLE 24 — CLAUSE DE REVUE ETHIQUE
+================================================================================
+
+24.1. Tout projet commercial utilisant l'Oeuvre dans un
+contexte sensible (sante, justice, education,
+securite, defense) doit faire l'objet d'une revue
+ethique independante publiee.
+
+24.2. La revue ethique doit inclure :
+
+(a) un comite d'au moins 3 personnes ;
+(b) une analyse d'impact ;
+(c) une consultation publique ;
+(d) un rapport accessible.
+
+================================================================================
+ARTICLE 25 — CLAUSE DE CONFORMITE REGLEMENTAIRE
+================================================================================
+
+25.1. Tout utilisateur doit respecter :
+
+(a) le RGPD (UE 2016/679) ;
+(b) le CCPA (Californie) ;
+(c) la Loi 25 (Quebec) ;
+(d) l'AI Act (UE) pour les systemes d'IA ;
+(e) le DMA et le DSA (UE) pour les plateformes.
+
+25.2. Toute violation d'une de ces reglementations
+constitue une violation de la presente licence.
+
+================================================================================
+ARTICLE 26 — CLAUSE D'AUDIT
+================================================================================
+
+26.1. L'Auteur se reserve le droit de demander un audit
+independant a tout utilisateur commercial.
+
+26.2. L'utilisateur doit fournir dans un delai de 60
+jours :
+
+(a) la liste des composants utilises ;
+(b) la description des usages ;
+(c) les empreintes SHA-256 ;
+(d) les rapports de conformite.
+
+================================================================================
+ARTICLE 27 — CLAUSE D'ARBITRAGE
+================================================================================
+
+27.1. Tout litige relatif a la presente licence est
+soumis a arbitrage selon les regles du Centre
+Canadien d'Arbitrage Commercial.
+
+27.2. Le siege de l'arbitrage est Montreal, Quebec,
+Canada.
+
+27.3. La langue de l'arbitrage est le francais ou
+l'anglais, au choix de la partie demanderesse.
+
+================================================================================
+ARTICLE 28 — CLAUSE DE RETRAIT DE LICENCE
+================================================================================
+
+28.1. L'Auteur se reserve le droit de retirer la licence
+a toute entite qui violerait les articles 4 a 15,
+17, ou 25.
+
+28.2. Le retrait prend effet immediatement apres
+notification ecrite (email, courrier, ou
+publication sur le depot officiel).
+
+28.3. L'entite visee doit cesser toute utilisation de
+l'Oeuvre dans un delai de 30 jours apres
+notification.
+
+28.4. Le retrait ne remet pas en cause les droits
+acquis par les utilisateurs non fautifs.
+
+================================================================================
+ARTICLE 29 — CLAUSE DE SUCCESSION ET HERITAGE
+================================================================================
+
+29.1. En cas de deces ou d'incapacite de l'Auteur, les
+droits et obligations de la presente licence sont
+transmis a ses heritiers legaux ou a la personne
+morale designee par testament.
+
+29.2. Les heritiers ne peuvent modifier la presente
+licence qu'avec l'accord d'un comite de
+gouvernance compose d'au moins 3 contributeurs
+majeurs.
+
+================================================================================
+ARTICLE 30 — NON-GARANTIE ET LIMITATION DE RESPONSABILITE
+================================================================================
+
+CE LOGICIEL EST FOURNI "EN L'ETAT", SANS GARANTIE D'AUCUNE SORTE,
+EXPRESSE OU IMPLICITE, Y COMPRIS MAIS SANS S'Y LIMITER, LES
+GARANTIES DE QUALITE MARCHANDE, D'ADEQUATION A UN USAGE
+PARTICULIER ET D'ABSENCE DE CONTREFAÇON. EN AUCUN CAS L'AUTEUR
+OU LES CONTRIBUTEURS NE POURRONT ETRE TENUS RESPONSABLES DE
+TOUTE RECLAMATION, DOMMAGE OU AUTRE RESPONSABILITE, QUE CE SOIT
+DANS LE CADRE D'UN CONTRAT, D'UN DELIT OU AUTRE, DECOULANT DE,
+OU EN RELATION AVEC LE LOGICIEL OU L'UTILISATION OU D'AUTRES
+MANIPULATIONS DU LOGICIEL.
+
+================================================================================
+ANNEXE A — FORMULAIRE DE NOTIFICATION GOOGLE
+================================================================================
+
+A retourner a awamomo646@outlook.com dans les 30 jours suivant
+la premiere utilisation commerciale.
+
+Nom de l'entite : _____________________________________________
+Adresse : _____________________________________________
+Contact legal : _____________________________________________
+Email : _____________________________________________
+Produit : _____________________________________________
+Composants utilises : _____________________________________________
+Date premiere util. : _____________________________________________
+Revenu direct annuel : _____________________________________________
+Fonds open source : _____________________________________________
+Signature : _____________________________________________
+
+================================================================================
+ANNEXE B — FORMULAIRE DE NOTIFICATION NVIDIA
+================================================================================
+
+A retourner a awamomo646@outlook.com dans les 30 jours suivant
+la premiere utilisation commerciale.
+
+Nom de l'entite : _____________________________________________
+Adresse : _____________________________________________
+Contact legal : _____________________________________________
+Email : _____________________________________________
+Produit : _____________________________________________
+Composants utilises : _____________________________________________
+Date premiere util. : _____________________________________________
+Modifications prevues : _____________________________________________
+Date de publication : _____________________________________________
+Signature : _____________________________________________
+
+================================================================================
+ANNEXE C — MODELE D'AUDIT ETHIQUE
+================================================================================
+
+Document a publier pour tout projet sensible.
+
+1. Description du projet
+2. Usage de l'Oeuvre
+3. Impact sur les droits fondamentaux
+4. Biais identifies
+5. Mesures d'attenuation
+6. Consultation publique
+7. Avis du comite ethique (3 personnes minimum)
+8. Signature
+
+================================================================================
+ANNEXE D — LISTE DES OEUVRES TIERCES AUTORISEES
+================================================================================
+
+Les dependances tierces suivantes sont autorisees sous reserve
+de leurs licences respectives :
+
+- Python standard library (PSF License)
+- GNU C Library (LGPL)
+- OpenSSL (Apache-2.0)
+- SQLite (Public Domain)
+- zlib (zlib License)
+- curl (MIT-like)
+- Autres : a declarer a l'Auteur
+
+================================================================================
+FIN DE LA LICENCE NEXUS-OPEN-2.0
+================================================================================
+
+Copyright (c) 2026 Aissa Mohammedi (DGK)
+Contact : awamomo646@outlook.com
+Juridiction : Quebec, Canada
+
+Le present document est publie sous licence NEXUS-OPEN-2.0.
+Toute copie doit inclure cette mention.
+================================================================================
+"""
+
+
+LICENSE_EN = LICENSE_FR.replace("LICENCE NEXUS-OPEN-2.0 — VERSION FRANCAISE OFFICIELLE",
+"NEXUS-OPEN-2.0 LICENSE — OFFICIAL ENGLISH VERSION")
+LICENSE_EN = LICENSE_EN.replace("TABLE DES MATIERES", "TABLE OF CONTENTS")
+LICENSE_EN = LICENSE_EN.replace("Preambule", "Preamble")
+LICENSE_EN = LICENSE_EN.replace("Article", "Section")
+LICENSE_EN = LICENSE_EN.replace("JURIDICTION", "JURISDICTION")
+LICENSE_EN = LICENSE_EN.replace("Quebec, Canada", "Quebec, Canada")
+
+
+NOTICE_MD = """# NOTICE — NEXUS-OPEN-2.0
+
+## A l'attention de Google LLC, NVIDIA CORPORATION, Meta, Amazon, Apple, Microsoft, OpenAI, Anthropic
+
+Ce depot contient du code publie sous **NEXUS-OPEN-2.0**, une licence
+ouverte avec 30 articles qui s'appliquent a vous.
+
+### Obligations immediates (Google, NVIDIA, Meta, Amazon, Apple, Microsoft)
+
+- **Article 3** — Paternite renforcee : votre nom doit apparaitre partout
+ou le code est utilise.
+- **Article 4 a 9** — Versements : 0,5 % du revenu direct par produit.
+- **Article 13** — Interdiction militaire totale.
+- **Article 14** — IA : publication des Model Cards obligatoire.
+- **Article 15** — Protection des mineurs : consentement parental.
+- **Article 26** — Audit : vous devez repondre sous 60 jours a toute demande.
+
+### Obligations specifiques Google (article 4)
+
+- Rapport de conformite annuel public.
+- Notification dans les 30 jours (Annexe A).
+
+### Obligations specifiques NVIDIA (article 5)
+
+- Publication des modifications sous 90 jours.
+- Contribution en retour annuelle.
+- Notification dans les 30 jours (Annexe B).
+
+### Sanctions en cas de violation
+
+- Resiliation immediate de licence (article 28).
+- Publication du nom du contrevenant (article 13.3).
+- Arbitration a Montreal (article 27).
+
+### Contact
+
+Aissa Mohammedi (DGK)
+awamomo646@outlook.com
+"""
+
+
+PATENTS_MD = """# PATENTS — NEXUS-OPEN-2.0
+
+## Clause de brevets, article 18
+
+### 18.1 Aucune cession implicite
+
+Aucune licence de brevet, expresse ou implicite, n'est cedee
+par la publication de l'Oeuvre.
+
+### 18.2 Renonciation
+
+Toute entite utilisant l'Oeuvre renonce a deposer un brevet
+couvrant une fonctionnalite presente dans l'Oeuvre originale.
+
+### 18.3 Represailles defensives
+
+Si une entite intente une action en contrefacon contre
+l'Auteur ou un utilisateur, la licence NEXUS-OPEN-2.0 de
+cette entite est immediatement resiliee.
+
+### 18.4 Brevets tiers
+
+Certains composants peuvent dependre de brevets tiers.
+L'Utilisateur est seul responsable de leur obtention.
+
+### 18.5 Publication
+
+L'Auteur publiera la liste des brevets deposes par des tiers
+sur des fonctionnalites derivees.
+
+## Juridiction
+
+Quebec, Canada.
+"""
+
+
+TRADEMARK_MD = """# TRADEMARK — NEXUS-OPEN-2.0
+
+## Marques verbales de l'Auteur
+
+Les noms suivants sont des marques verbales de Aissa Mohammedi (DGK) :
+
+- NEXUS
+- NEXUS-OPEN
+- NEXUS-OPEN-1.0
+- NEXUS-OPEN-2.0
+- DGK
+- Aissa Mohammedi
+
+## Usage autorise
+
+- Reference descriptive a la licence.
+- Citation de l'Auteur dans un contexte editorial.
+- Mention dans les credits produit si conforme a l'article 3.
+
+## Usage interdit
+
+- Utilisation commerciale du nom NEXUS pour un produit non autorise.
+- Fausse attribution de partenariat.
+- Utilisation dans un contexte militaire ou de surveillance.
+
+## Contact
+
+awamomo646@outlook.com
+"""
+
+
+CONTRIBUTORS_MD = """# CONTRIBUTORS — NEXUS-OPEN-2.0
+
+## Auteur original
+
+- **Aissa Mohammedi** (DGK) — Architecte, auteur unique, detenteur
+des droits de paternite.
+- Email : awamomo646@outlook.com
+- Role : conception, code, protocoles, documentation.
+- Juridiction : Quebec, Canada.
+
+## Procedure pour contribuer
+
+1. Accepter NEXUS-OPEN-2.0 sans reserve.
+2. Signer un accord de cession non-exclusive.
+3. Soumettre une pull request avec :
+- description de la contribution ;
+- test de non-regression ;
+- empreinte SHA-256 du commit.
+4. Validation par l'Auteur ou un mainteneur designe.
+
+## Liste des contributeurs
+
+| Nom | Role | Date | Empreinte commit |
+|-----|------|------|------------------|
+| Aissa Mohammedi (DGK) | Auteur original | 2026 | voir git log |
+
+## Retrait
+
+Un contributeur peut demander le retrait de son nom a tout moment.
+La contribution reste sous NEXUS-OPEN-2.0.
+
+## Contact
+
+awamomo646@outlook.com
+"""
+
+
+GOVERNANCE_MD = """# GOVERNANCE — NEXUS-OPEN-2.0
+
+## Structure
+
+- **Auteur unique** : Aissa Mohammedi (DGK), detenteur final des decisions.
+- **Comite consultatif** : benevole, 3 a 7 personnes, propose des orientations.
+- **Mainteneurs** : responsables des pull requests et des releases.
+- **Contributeurs** : toute personne ayant signe l'accord de contribution.
+
+## Processus de decision
+
+1. Proposition publique (issue GitHub).
+2. Discussion 30 jours minimum.
+3. Vote du comite consultatif.
+4. Validation finale par l'Auteur.
+
+## Changements de licence
+
+- Publication 30 jours avant application.
+- Consultation publique obligatoire.
+- Validation par 3 contributeurs majeurs minimum (article 29.2).
+
+## Transparence
+
+- Toutes les decisions sont publiees sur le depot officiel.
+- Les rapports d'audit sont accessibles sans authentification.
+"""
+
+
+SECURITY_MD = """# SECURITY — NEXUS-OPEN-2.0
+
+## Signaler une vulnerabilite
+
+Email : awamomo646@outlook.com
+Delai de reponse : 90 jours (article 22).
+
+## Engagement
+
+- Accuse de reception dans les 7 jours.
+- Analyse technique dans les 30 jours.
+- Correctif dans les 90 jours.
+
+## Politique de divulgation
+
+- Pas de divulgation publique avant correction.
+- Exception : accord ecrit explicite.
+
+## Vulnerabilites connues
+
+Voir le fichier SECURITY-ADVISORIES.md a la racine du depot.
+"""
+
+
+ETHICS_MD = """# ETHICS — NEXUS-OPEN-2.0
+
+## Engagements ethiques
+
+- Refus de l'usage militaire (article 13).
+- Refus de la surveillance de masse (article 13).
+- Protection des mineurs (article 15).
+- Transparence algorithmique (article 21).
+- Respect du RGPD, CCPA, Loi 25 (article 25).
+
+## Revue ethique obligatoire
+
+Pour tout projet sensible : sante, justice, education, securite.
+
+## Comite ethique
+
+Au moins 3 personnes independantes.
+Rapport publie.
+
+## Contact
+
+awamomo646@outlook.com
+"""
+
+
+COMPLIANCE_MD = """# COMPLIANCE — NEXUS-OPEN-2.0
+
+## Reglementations couvertes
+
+- RGPD (UE 2016/679) — donnees personnelles.
+- CCPA (Californie) — vie privee consommateurs.
+- Loi 25 (Quebec) — protection des renseignements personnels.
+- AI Act (UE) — intelligence artificielle.
+- DMA / DSA (UE) — marches et services numeriques.
+
+## Rapports requis
+
+- Rapport annuel de conformite (article 4.1.d).
+- Model Cards publiees (article 14.2.a).
+- Audit ethique (article 24.1).
+- Reponse a audit Auteur (article 26).
+
+## Sanctions
+
+- Resiliation immediate (article 28).
+- Publication du nom (article 13.3).
+- Arbitration Montreal (article 27).
+"""
+
+
+CHANGELOG_MD = """# CHANGELOG — NEXUS-OPEN
+
+## v2.0.0 — 2026
+
+- 30 articles (contre 10 en v1.0).
+- Ajout des articles Meta, Amazon, Apple, Microsoft, OpenAI/Anthropic.
+- Ajout des articles Etats souverains, environnement, mineurs,
+transparence algorithmique, securite, gouvernance, revue ethique,
+conformite, audit, arbitrage, succession.
+- Annexes A/B/C/D.
+- Version anglaise officielle.
+- Fichiers PATENTS, TRADEMARK, GOVERNANCE, SECURITY, ETHICS, COMPLIANCE.
+- En-tetes pour Python, JavaScript, Go, Rust, YAML, C.
+- Manifeste Kubernetes certifie.
+- Dockerfile certifie.
+
+## v1.0.0 — 2026
+
+- Premiere version, 10 articles.
+- Fichiers LICENSE, NOTICE, PATENTS, CONTRIBUTORS, README.
+"""
+
+
+README_MD = """# NEXUS-OPEN-2.0
+
+Licence ouverte, ethique, et commercialement contraignante, creee par
+**Aissa Mohammedi (DGK)**. 30 articles, 4 annexes, 2 langues.
+
+## Pourquoi cette licence
+
+MIT, Apache, BSD et GPL sont muettes sur :
+
+- l'usage militaire ;
+- la surveillance de masse ;
+- l'entrainement d'IA ;
+- les contreparties financieres des geants tech ;
+- la protection des mineurs ;
+- la transparence algorithmique.
+
+NEXUS-OPEN-2.0 comble ces vides.
+
+## Contenu
+
+| Fichier | Role |
+|---------|------|
+| `LICENSE-NEXUS-OPEN-2.0-FR.txt` | Version francaise officielle |
+| `LICENSE-NEXUS-OPEN-2.0-EN.txt` | Version anglaise officielle |
+| `NOTICE.md` | Message direct aux geants tech |
+| `PATENTS.md` | Clause de brevets |
+| `TRADEMARK.md` | Clause de marques |
+| `CONTRIBUTORS.md` | Auteur et contributeurs |
+| `GOVERNANCE.md` | Structure de gouvernance |
+| `SECURITY.md` | Politique de securite |
+| `ETHICS.md` | Engagements ethiques |
+| `COMPLIANCE.md` | Conformite reglementaire |
+| `CHANGELOG.md` | Historique des versions |
+| `HEADER_*.txt` | En-tetes pour 6 langages |
+| `nexus-certified-service.yaml` | Manifeste K8s certifie |
+| `Dockerfile.certified` | Dockerfile certifie |
+| `certificate.json` | Index et empreintes SHA-256 |
+
+## Application
+
+1. Copiez les fichiers a la racine de votre depot.
+2. Ajoutez l'en-tete correspondant a chaque fichier source.
+3. Mentionnez la licence dans votre README.
+
+## Comparaison
+
+| | MIT | Apache | BSD | GPL-3 | NEXUS-OPEN-2.0 |
+|---|---|---|---|---|---|
+| Paternite | oui | oui | oui | oui | **renforcee** |
+| Clause militaire | non | non | non | non | **oui** |
+| Clause IA | non | non | non | non | **oui** |
+| Clause mineurs | non | non | non | non | **oui** |
+| Clause revenus | non | non | non | non | **oui** |
+| Clause environnement | non | non | non | non | **oui** |
+| Retrait | non | non | non | non | **oui** |
+| Audit | non | non | non | non | **oui** |
+| Articles | 3 | 9 | 3 | 17 | **30** |
+
+## Contact
+
+Aissa Mohammedi (DGK)
+awamomo646@outlook.com
+Juridiction : Quebec, Canada
+"""
+
+
+HEADER_PY = """# NEXUS-OPEN-2.0
+# Copyright (c) 2026 Aissa Mohammedi (DGK). Tous droits reserves.
+# Voir LICENSE-NEXUS-OPEN-2.0-FR.txt pour les conditions completes.
+# Contact : awamomo646@outlook.com
+# Juridiction : Quebec, Canada
+#
+# Usage militaire, surveillance de masse, et repression politique INTERDITS
+# (article 13). Toute utilisation pour l'IA doit respecter RGPD/CCPA/Loi 25
+# et publier une Model Card (articles 10 et 14). Protection des mineurs
+# obligatoire (article 15).
+#
+# Fourni "EN L'ETAT", sans garantie (article 30).
+"""
+
+
+HEADER_JS = """/*
+* NEXUS-OPEN-2.0
+* Copyright (c) 2026 Aissa Mohammedi (DGK). Tous droits reserves.
+* Voir LICENSE-NEXUS-OPEN-2.0-FR.txt pour les conditions completes.
+* Contact : awamomo646@outlook.com
+* Juridiction : Quebec, Canada
+*
+* Usage militaire, surveillance de masse, et repression politique INTERDITS
+* (article 13). Toute utilisation pour l'IA doit respecter RGPD/CCPA/Loi 25
+* et publier une Model Card (articles 10 et 14). Protection des mineurs
+* obligatoire (article 15).
+*
+* Fourni "EN L'ETAT", sans garantie (article 30).
+*/
+"""
+
+
+HEADER_GO = """// NEXUS-OPEN-2.0
+// Copyright (c) 2026 Aissa Mohammedi (DGK). Tous droits reserves.
+// Voir LICENSE-NEXUS-OPEN-2.0-FR.txt pour les conditions completes.
+// Contact : awamomo646@outlook.com
+// Juridiction : Quebec, Canada
+//
+// Usage militaire, surveillance de masse, et repression politique INTERDITS
+// (article 13). Toute utilisation pour l'IA doit respecter RGPD/CCPA/Loi 25
+// et publier une Model Card (articles 10 et 14). Protection des mineurs
+// obligatoire (article 15).
+//
+// Fourni "EN L'ETAT", sans garantie (article 30).
+"""
+
+
+HEADER_RUST = """// NEXUS-OPEN-2.0
+// Copyright (c) 2026 Aissa Mohammedi (DGK). Tous droits reserves.
+// Voir LICENSE-NEXUS-OPEN-2.0-FR.txt pour les conditions completes.
+// Contact : awamomo646@outlook.com
+// Juridiction : Quebec, Canada
+//
+// Usage militaire, surveillance de masse, et repression politique INTERDITS
+// (article 13). Toute utilisation pour l'IA doit respecter RGPD/CCPA/Loi 25
+// et publier une Model Card (articles 10 et 14). Protection des mineurs
+// obligatoire (article 15).
+//
+// Fourni "EN L'ETAT", sans garantie (article 30).
+"""
+
+
+HEADER_C = """/* NEXUS-OPEN-2.0
+* Copyright (c) 2026 Aissa Mohammedi (DGK). Tous droits reserves.
+* Voir LICENSE-NEXUS-OPEN-2.0-FR.txt pour les conditions completes.
+* Contact : awamomo646@outlook.com
+* Juridiction : Quebec, Canada
+*
+* Usage militaire, surveillance de masse, et repression politique INTERDITS
+* (article 13). Toute utilisation pour l'IA doit respecter RGPD/CCPA/Loi 25
+* et publier une Model Card (articles 10 et 14). Protection des mineurs
+* obligatoire (article 15).
+*
+* Fourni "EN L'ETAT", sans garantie (article 30).
+*/
+"""
+
+
+HEADER_YAML = """# NEXUS-OPEN-2.0
+# Copyright (c) 2026 Aissa Mohammedi (DGK). Tous droits reserves.
+# Voir LICENSE-NEXUS-OPEN-2.0-FR.txt pour les conditions completes.
+# Contact : awamomo646@outlook.com
+# Juridiction : Quebec, Canada
+#
+# Usage militaire, surveillance de masse, et repression politique INTERDITS
+# (article 13). Toute utilisation pour l'IA doit respecter RGPD/CCPA/Loi 25
+# et publier une Model Card (articles 10 et 14). Protection des mineurs
+# obligatoire (article 15).
+#
+# Fourni "EN L'ETAT", sans garantie (article 30).
+"""
+
+
+K8S_TEMPLATE = """# =====================================================================
+# NEXUS-OPEN-2.0
+# Copyright (c) 2026 Aissa Mohammedi (DGK). Tous droits reserves.
+# Voir LICENSE-NEXUS-OPEN-2.0-FR.txt pour les conditions completes.
+# Contact : awamomo646@outlook.com
+# Juridiction : Quebec, Canada
+# =====================================================================
+# SHA-256 de la licence : __SHA__
+# =====================================================================
+
+apiVersion: v1
+kind: Service
+metadata:
+name: nexus-certified-service
+namespace: nexus-system
+labels:
+app: nexus
+chart: nexus-open-2.0
+release: nexus-release
+heritage: nexus
+certificate: nexus-open-2.0
+author: aissa-mohammedi
+license-sha256: __SHA_SHORT__
+annotations:
+nexus.io/certificate: "NEXUS-OPEN-2.0"
+nexus.io/author: "Aissa Mohammedi (DGK)"
+nexus.io/contact: "awamomo646@outlook.com"
+nexus.io/jurisdiction: "Quebec, Canada"
+nexus.io/articles: "30"
+nexus.io/usage-militaire: "interdit-article-13"
+nexus.io/usage-ia: "rgpd-ccpa-loi25-articles-10-14"
+nexus.io/mineurs: "protection-article-15"
+nexus.io/environnement: "article-16"
+nexus.io/audit: "article-26"
+spec:
+type: ClusterIP
+ports:
+- port: 8000
+targetPort: nexus-http
+name: nexus-http
+- port: 8001
+targetPort: nexus-grpc
+name: nexus-grpc
+- port: 8002
+targetPort: nexus-metrics
+name: nexus-metrics
+- port: 8880
+targetPort: nexus-script-viewer
+name: nexus-script-viewer
+- port: 8098
+targetPort: nexus-dark-web
+name: nexus-dark-web
+- port: 8099
+targetPort: nexus-nvidia-logic
+name: nexus-nvidia-logic
+- port: 8100
+targetPort: nexus-nvidia-capture
+name: nexus-nvidia-capture
+selector:
+app: nexus
+release: nexus-release
+---
+apiVersion: v1
+kind: Service
+metadata:
+name: nexus-certified-metrics
+namespace: nexus-system
+labels:
+app: nexus-metrics
+chart: nexus-open-2.0
+release: nexus-release
+heritage: nexus
+certificate: nexus-open-2.0
+annotations:
+alpha.monitoring.coreos.com/non-namespaced: "true"
+nexus.io/certificate: "NEXUS-OPEN-2.0"
+spec:
+ports:
+- name: metrics
+port: 8080
+targetPort: nexus-metrics
+protocol: TCP
+selector:
+app: nexus
+release: nexus-release
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+name: nexus-certified-metrics-monitor
+namespace: nexus-system
+labels:
+app: nexus-metrics-monitor
+chart: nexus-open-2.0
+release: nexus-release
+heritage: nexus
+certificate: nexus-open-2.0
+spec:
+selector:
+matchLabels:
+app: nexus-metrics
+endpoints:
+- port: metrics
+interval: 15s
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+name: nexus-certificate
+namespace: nexus-system
+labels:
+app: nexus
+certificate: nexus-open-2.0
+author: aissa-mohammedi
+data:
+LICENSE: |
+NEXUS-OPEN-2.0
+Copyright (c) 2026 Aissa Mohammedi (DGK)
+Voir LICENSE-NEXUS-OPEN-2.0-FR.txt.
+Usage militaire, surveillance de masse, repression politique : INTERDITS.
+AUTEUR: "Aissa Mohammedi (DGK)"
+CONTACT: "awamomo646@outlook.com"
+JURIDICTION: "Quebec, Canada"
+VERSION_CERTIFICAT: "2.0.0"
+ARTICLES: "30"
+ANNEXES: "4"
+SHA256_LICENCE: "__SHA__"
+CLAUSE_GOOGLE: "article-4 mention + 0.5% fonds open source"
+CLAUSE_NVIDIA: "article-5 entetes + publication modifications + contribution"
+CLAUSE_META: "article-6 audit ethique moderation"
+CLAUSE_AMAZON: "article-7 0.5% cloud"
+CLAUSE_APPLE: "article-8 pas de reconnaissance faciale sans consentement"
+CLAUSE_MICROSOFT: "article-9 copilot transparency"
+CLAUSE_IA: "articles-10-14 Model Cards + RGPD + CCPA + Loi 25"
+CLAUSE_ETATS: "article-11 notification publique"
+CLAUSE_UNIVERSITES: "article-12 libre"
+CLAUSE_MILITAIRE: "article-13 interdit total"
+CLAUSE_MINEURS: "article-15 protection"
+CLAUSE_ENVIRONNEMENT: "article-16 -5% par an"
+CLAUSE_PAIEMENT_VOLONTAIRE: "article-20 1% R&D"
+CLAUSE_AUDIT: "article-26 60 jours"
+CLAUSE_ARBITRAGE: "article-27 Montreal"
+CLAUSE_RETRAIT: "article-28 30 jours"
+CLAUSE_SUCCESSion: "article-29 heritage"
+APPLICABLE_A: "Google LLC, NVIDIA CORPORATION, Meta, Amazon, Apple, Microsoft, OpenAI, Anthropic"
+"""
+
+
+DOCKERFILE = """# =====================================================================
+# NEXUS-OPEN-2.0
+# Copyright (c) 2026 Aissa Mohammedi (DGK). Tous droits reserves.
+# Voir LICENSE-NEXUS-OPEN-2.0-FR.txt pour les conditions completes.
+# =====================================================================
+FROM python:3.12-slim
+
+LABEL org.opencontainers.image.title="nexus-certified"
+LABEL org.opencontainers.image.authors="Aissa Mohammedi (DGK) <awamomo646@outlook.com>"
+LABEL org.opencontainers.image.licenses="NEXUS-OPEN-2.0"
+LABEL org.opencontainers.image.url="https://github.com/TON_PSEUDO/nexus-open-license"
+LABEL nexus.io/certificate="NEXUS-OPEN-2.0"
+LABEL nexus.io/articles="30"
+LABEL nexus.io/jurisdiction="Quebec, Canada"
+LABEL nexus.io/military="forbidden-article-13"
+LABEL nexus.io/ai="rgpd-ccpa-loi25-articles-10-14"
+LABEL nexus.io/minors="protected-article-15"
+LABEL nexus.io/environment="article-16"
+
+WORKDIR /opt/nexus
+
+RUN mkdir -p /opt/nexus/scripts /opt/nexus/rapport /opt/nexus/cache
+
+COPY LICENSE-NEXUS-OPEN-2.0-FR.txt /opt/nexus/
+COPY LICENSE-NEXUS-OPEN-2.0-EN.txt /opt/nexus/
+COPY NOTICE.md /opt/nexus/
+COPY PATENTS.md /opt/nexus/
+COPY ETHICS.md /opt/nexus/
+COPY certificate.json /opt/nexus/
+
+ENV NEXUS_LICENSE="NEXUS-OPEN-2.0"
+ENV NEXUS_AUTHOR="Aissa Mohammedi (DGK)"
+ENV NEXUS_CONTACT="awamomo646@outlook.com"
+ENV NEXUS_JURISDICTION="Quebec, Canada"
+
+EXPOSE 8080 8098 8099 8100 8880
+
+CMD ["python3", "-m", "http.server", "8880", "--directory", "/opt/nexus"]
+"""
+
+
+def calculer_sha256(chemin):
+try:
+with open(chemin, "rb") as f:
+return hashlib.sha256(f.read()).hexdigest()
+except OSError:
+return ""
+
+
+def main():
+log("=== NEXUS CERTIFICATE PRO GENERATOR v" + VERSION + " ===")
+log("Auteur : " + AUTEUR + " (" + PSEUDO + ")")
+log("Juridiction : " + JURIDICTION)
+log("Dossier : " + PROJECT_DIR)
+log("")
+
+log("Ecriture des fichiers...")
+ecrire(F_LICENSE_FR, LICENSE_FR)
+ecrire(F_LICENSE_EN, LICENSE_EN)
+ecrire(F_NOTICE, NOTICE_MD)
+ecrire(F_PATENTS, PATENTS_MD)
+ecrire(F_TRADEMARK, TRADEMARK_MD)
+ecrire(F_CONTRIBUTORS, CONTRIBUTORS_MD)
+ecrire(F_GOVERNANCE, GOVERNANCE_MD)
+ecrire(F_SECURITY, SECURITY_MD)
+ecrire(F_ETHICS, ETHICS_MD)
+ecrire(F_COMPLIANCE, COMPLIANCE_MD)
+ecrire(F_CHANGELOG, CHANGELOG_MD)
+ecrire(F_README, README_MD)
+ecrire(F_HEADER_PY, HEADER_PY)
+ecrire(F_HEADER_JS, HEADER_JS)
+ecrire(F_HEADER_GO, HEADER_GO)
+ecrire(F_HEADER_RUST, HEADER_RUST)
+ecrire(F_HEADER_C, HEADER_C)
+ecrire(F_HEADER_YAML, HEADER_YAML)
+ecrire(F_DOCKER, DOCKERFILE)
+
+sha_licence = calculer_sha256(F_LICENSE_FR)
+k8s_final = K8S_TEMPLATE.replace("__SHA__", sha_licence).replace("__SHA_SHORT__", sha_licence[:32])
+ecrire(F_K8S, k8s_final)
+
+log("")
+log("Calcul des empreintes SHA-256...")
+
+fichiers = [
+F_LICENSE_FR, F_LICENSE_EN, F_NOTICE, F_PATENTS, F_TRADEMARK,
+F_CONTRIBUTORS, F_GOVERNANCE, F_SECURITY, F_ETHICS, F_COMPLIANCE,
+F_CHANGELOG, F_README, F_HEADER_PY, F_HEADER_JS, F_HEADER_GO,
+F_HEADER_RUST, F_HEADER_C, F_HEADER_YAML, F_K8S, F_DOCKER,
+]
+
+empreintes = {}
+total_octets = 0
+for f in fichiers:
+if os.path.isfile(f):
+h = calculer_sha256(f)
+t = os.path.getsize(f)
+empreintes[os.path.basename(f)] = {"sha256": h, "taille": t}
+total_octets += t
+
+index = {
+"version": VERSION,
+"licence": LICENCE,
+"auteur": AUTEUR,
+"pseudo": PSEUDO,
+"contact": CONTACT,
+"juridiction": JURIDICTION,
+"date": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+"dossier": PROJECT_DIR,
+"articles": 30,
+"annexes": 4,
+"langues": ["fr", "en"],
+"empreintes": empreintes,
+"sha256_licence_fr": calculer_sha256(F_LICENSE_FR),
+"sha256_licence_en": calculer_sha256(F_LICENSE_EN),
+"total_octets": total_octets,
+"total_fichiers": len(empreintes),
+}
+index["empreinte_globale"] = hashlib.sha256(
+json.dumps(index, sort_keys=True, default=str).encode()
+).hexdigest()
+
+with open(F_INDEX, "w", encoding="utf-8") as f:
+json.dump(index, f, indent=2, ensure_ascii=False)
+
+log("")
+log("=== CERTIFICAT NEXUS-OPEN-2.0 ===")
+log("Licence : " + LICENCE)
+log("Auteur : " + AUTEUR + " (" + PSEUDO + ")")
+log("Contact : " + CONTACT)
+log("Juridiction : " + JURIDICTION)
+log("Articles : 30")
+log("Annexes : 4")
+log("Langues : FR + EN")
+log("SHA-256 licence : " + index["sha256_licence_fr"])
+log("SHA-256 global : " + index["empreinte_globale"])
+log("Total fichiers : " + str(len(empreintes)))
+log("Total octets : " + str(total_octets))
+log("")
+log("Fichiers generes :")
+for f in fichiers + [F_INDEX]:
+if os.path.isfile(f):
+t = os.path.getsize(f)
+log(" " + os.path.basename(f) + " (" + str(t) + " octets)")
+log("")
+log("Pour publier :")
+log(" cd " + PROJECT_DIR)
+log(" git init")
+log(" git add .")
+log(" git commit -m 'NEXUS-OPEN-2.0'")
+log(" git remote add origin https://github.com/TON_PSEUDO/nexus-open-license.git")
+log(" git push -u origin main")
+log("")
+
+
+if __name__ == "__main__":
+main()
