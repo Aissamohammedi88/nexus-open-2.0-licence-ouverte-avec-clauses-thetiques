@@ -1,0 +1,135 @@
+```sh
+echo -n '{"nom":"NEXUS","version":"1.0.0"}' | sha256sum
+```
+
+JavaScript (navigateur)
+
+```javascript
+const sceau = await crypto.subtle.digest('SHA-256',
+new TextEncoder().encode(JSON.stringify(genome)));
+console.log(Array.from(new Uint8Array(sceau))
+.map(b => b.toString(16).padStart(2, '0')).join(''));
+```
+
+Node.js
+
+```javascript
+const crypto = require('crypto');
+const sceau = crypto.createHash('sha256')
+.update(JSON.stringify(genome)).digest('hex');
+```
+
+
+
+
+---
+
+## 📄 FICHIER 3 — `.gitignore`
+
+⚠️ Attention : ce fichier commence par un **point**. Il doit s'appeler exactement **`.gitignore`** (pas `gitignore.txt`).
+
+```gitignore
+# NEXUS-OPEN-2.0
+# Copyright (c) 2026 Aissa Mohammedi (DGK)
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtualenv
+venv/
+env/
+ENV/
+.venv/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# NEXUS specifiques
+nexus_mesh/
+nexus_swarm/
+nexus_identity/
+nexus_linkedin_viral/
+nexus_repo/
+*.tmp
+*.bak
+*.cache
+
+# Cellules (peuvent contenir des donnees sensibles)
+cellules/
+*.cellule
+node_id.txt
+peers.json
+seeds.json
+url_publique.txt
+subdomain.txt
+
+# SSH (jamais committer)
+ssh/
+*.pem
+*.key
+id_ed25519*
+id_rsa*
+
+# Rapports
+rapport/
+rapports/
+*.json.tmp
+
+# Environnement
+.env
+.env.local
+.env.*.local
+
+# Tests
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Build artifacts
+*.tar.gz
+*.zip
+!nexus.zip
