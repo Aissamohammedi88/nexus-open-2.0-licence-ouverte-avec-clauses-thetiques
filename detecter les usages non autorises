@@ -1,0 +1,480 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# NEXUS LICENSE ENFORCER
+# Petit script a mettre dans le depot pour detecter les usages non autorises
+# de NEXUS-OPEN-2.0 : Google sans 0,5 %, NVIDIA sans publication,
+# usage militaire, IA non consentie, etc.
+# Auteur : Aissa Mohammedi (DGK)
+# Version : 1.0.0
+# Licence : NEXUS-OPEN-2.0
+
+import os
+import re
+import sys
+import json
+import time
+import hashlib
+import datetime
+import urllib.request
+import urllib.parse
+import urllib.error
+
+VERSION = "1.0.0"
+AUTEUR = "Aissa Mohammedi (DGK)"
+LICENCE = "NEXUS-OPEN-2.0"
+CONTACT = "awamomo646@outlook.com"
+
+DOCS = os.path.join(os.path.expanduser("~"), "Documents")
+OUT = os.path.join(DOCS, "nexus_license_enforcer")
+os.makedirs(OUT, exist_ok=True)
+
+LOG_FILE = os.path.join(OUT, "enforcer.log")
+RAPPORT_JSON = os.path.join(OUT, "rapport.json")
+RAPPORT_MD = os.path.join(OUT, "rapport.md")
+VIOLATIONS_FILE = os.path.join(OUT, "violations.json")
+
+CTX = None
+try:
+import ssl
+CTX = ssl.create_default_context()
+CTX.check_hostname = False
+CTX.verify_mode = ssl.CERT_NONE
+except ImportError:
+pass
+
+TIMEOUT = 15
+
+
+def log(msg):
+ts = time.strftime("%Y-%m-%d %H:%M:%S")
+line = "[{}] {}".format(ts, msg)
+try:
+print(line, flush=True)
+except Exception:
+pass
+try:
+with open(LOG_FILE, "a", encoding="utf-8") as f:
+f.write(line + "\n")
+except OSError:
+pass
+
+
+def now_iso():
+return datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+
+def http_get(url, headers=None, timeout=TIMEOUT):
+h = {
+"User-Agent": "NexusLicenseEnforcer/1.0 (contact: " + CONTACT + ")",
+"Accept": "application/json, text/html, */*",
+}
+if headers:
+h.update(headers)
+try:
+req = urllib.request.Request(url, headers=h)
+with urllib.request.urlopen(req, timeout=timeout, context=CTX) as r:
+raw = r.read(1000000)
+return {
+"ok": True,
+"status": r.status,
+"body": raw.decode("utf-8", "ignore"),
+"taille": len(raw),
+"sha256": hashlib.sha256(raw).hexdigest(),
+}
+except urllib.error.HTTPError as e:
+return {"ok": False, "status": e.code, "erreur": "HTTP " + str(e.code)}
+except Exception as e:
+return {"ok": False, "status": 0, "erreur": str(e)[:150]}
+
+
+# ═══════════════════════════════════════════════════════════════════
+# REGLES DE VIOLATION
+# ═══════════════════════════════════════════════════════════════════
+
+ENTITES_SURVEILLEES = {
+"google": {
+"clause": "CLAUSE 2.1",
+"obligation": "Mention + 0,5 % revenus reverses a l'open source",
+"mots_cles": ["Google", "Alphabet", "DeepMind", "Google Cloud", "YouTube"],
+"urls_a_surveiller": [
+"https://github.com/google",
+"https://github.com/googlecloudplatform",
+"https://github.com/GoogleCloudPlatform",
+"https://github.com/deepmind",
+"https://huggingface.co/google",
+"https://pypi.org/user/google/",
+],
+},
+"nvidia": {
+"clause": "CLAUSE 3.1",
+"obligation": "Conservation des en-tetes + publication des modifications sous 90 jours",
+"mots_cles": ["NVIDIA", "CUDA", "TensorRT", "NeMo", "Triton", "IsaacSim"],
+"urls_a_surveiller": [
+"https://github.com/NVIDIA",
+"https://github.com/triton-inference-server",
+"https://github.com/isaac-sim",
+"https://huggingface.co/nvidia",
+"https://pypi.org/user/nvidia/",
+],
+},
+"meta": {
+"clause": "CLAUSE 6",
+"obligation": "Pas de moderation automatisee sans audit ethique",
+"mots_cles": ["Meta", "Facebook", "Instagram", "WhatsApp", "Llama"],
+"urls_a_surveiller": [
+"https://github.com/facebook",
+"https://github.com/facebookresearch",
+"https://huggingface.co/meta-llama",
+],
+},
+"amazon": {
+"clause": "CLAUSE 7",
+"obligation": "Pas d'usage dans un service cloud sans declaration",
+"mots_cles": ["Amazon", "AWS", "Bedrock", "SageMaker"],
+"urls_a_surveiller": [
+"https://github.com/aws",
+"https://github.com/awslabs",
+],
+},
+"apple": {
+"clause": "CLAUSE 8",
+"obligation": "Pas de reconnaissance faciale sans consentement eclaire",
+"mots_cles": ["Apple", "Face ID", "Siri", "Vision Pro"],
+"urls_a_surveiller": [
+"https://github.com/apple",
+"https://github.com/apple-oss-distributions",
+],
+},
+"microsoft": {
+"clause": "CLAUSE 9",
+"obligation": "Pas de Copilot / Azure AI sans publication des Model Cards",
+"mots_cles": ["Microsoft", "Azure", "Copilot", "GitHub Copilot", "Bing"],
+"urls_a_surveiller": [
+"https://github.com/microsoft",
+"https://github.com/Azure",
+"https://huggingface.co/microsoft",
+],
+},
+"openai": {
+"clause": "CLAUSE 10",
+"obligation": "Model Cards obligatoires + pas d'usage sans consentement",
+"mots_cles": ["OpenAI", "ChatGPT", "GPT-4", "GPT-5", "Sora"],
+"urls_a_surveiller": [
+"https://github.com/openai",
+"https://huggingface.co/openai",
+],
+},
+"anthropic": {
+"clause": "CLAUSE 10",
+"obligation": "Model Cards obligatoires",
+"mots_cles": ["Anthropic", "Claude"],
+"urls_a_surveiller": [
+"https://github.com/anthropics",
+"https://huggingface.co/Anthropic",
+],
+},
+"defense": {
+"clause": "CLAUSE 5",
+"obligation": "USAGE MILITAIRE INTERDIT",
+"mots_cles": ["DoD", "Pentagon", "DARPA", "Maven", "weapon", "drone"],
+"urls_a_surveiller": [
+"https://github.com/defense",
+],
+},
+"surveillance": {
+"clause": "CLAUSE 5",
+"obligation": "SURVEILLANCE DE MASSE INTERDITE",
+"mots_cles": ["spyware", "mass surveillance", "Pegasus", "stalkerware"],
+"urls_a_surveiller": [],
+},
+}
+
+
+MOTS_VIOLATION = {
+"usage_militaire": [
+r"\b(autonomous weapon|weapon system|drone strike|killer robot)\b",
+r"\b(military|defense|pentagon|darpa|maven)\b.{0,80}\bnexus\b",
+r"\bnexus\b.{0,80}\b(military|defense|pentagon|darpa)\b",
+],
+"surveillance_masse": [
+r"\b(mass surveillance|spyware|stalkerware|pegasus)\b.{0,80}\bnexus\b",
+r"\bnexus\b.{0,80}\b(surveillance|spyware|stalkerware)\b",
+],
+"ia_non_consentie": [
+r"\btrain(ing|ed)?\s+(llm|model|ai)\b.{0,80}\bnexus\b",
+r"\bnexus\b.{0,80}\btrain(ing|ed)?\s+(llm|model|ai)\b",
+],
+"revente_donnees": [
+r"\bsell\s+(user\s+)?data\b.{0,80}\bnexus\b",
+r"\bnexus\b.{0,80}\bsell\s+(user\s+)?data\b",
+],
+"bypass_licence": [
+r"\b(remove|bypass|ignore)\s+(the\s+)?licen[cs]e\b.{0,80}\bnexus\b",
+r"\bnexus\b.{0,80}\b(remove|bypass|ignore)\s+licen[cs]e\b",
+r"\b(fork|clone)\b.{0,80}\b(without|sans)\s+(the\s+)?licen[cs]e\b",
+],
+}
+
+
+# ═══════════════════════════════════════════════════════════════════
+# VERIFICATIONS
+# ═══════════════════════════════════════════════════════════════════
+
+def verifier_depot(entite, url):
+"""Verifie si un depot contient des references a NEXUS sans mention licence."""
+r = http_get(url)
+if not r.get("ok"):
+return {
+"entite": entite,
+"url": url,
+"ok": False,
+"erreur": r.get("erreur", ""),
+"nexus_detecte": False,
+"licence_nexus": False,
+"violation": False,
+}
+
+body = r["body"].lower()
+nexus = "nexus" in body
+licence = "nexus-open" in body or "aissa mohammedi" in body or "dgk" in body
+
+return {
+"entite": entite,
+"url": url,
+"ok": True,
+"status": r.get("status", 200),
+"taille": r["taille"],
+"sha256": r["sha256"],
+"nexus_detecte": nexus,
+"licence_nexus": licence,
+"violation": nexus and not licence,
+}
+
+
+def analyser_texte(texte, contexte=""):
+"""Cherche des motifs de violation dans un texte."""
+violations = []
+if not texte:
+return violations
+
+low = texte.lower()
+for nom, patterns in MOTS_VIOLATION.items():
+for pat in patterns:
+try:
+for m in re.finditer(pat, low, re.IGNORECASE):
+debut = max(0, m.start() - 80)
+fin = min(len(texte), m.end() + 80)
+extrait = texte[debut:fin].replace("\n", " ").strip()
+violations.append({
+"type": nom,
+"contexte": contexte,
+"extrait": extrait[:250],
+})
+break
+except Exception:
+pass
+return violations
+
+
+def scanner_entites():
+log("=== Scan des entites surveillees ===")
+resultats = []
+for entite, info in ENTITES_SURVEILLEES.items():
+log("[" + entite + "] " + info["clause"])
+for url in info["urls_a_surveiller"]:
+log(" " + url)
+r = verifier_depot(entite, url)
+r["clause"] = info["clause"]
+r["obligation"] = info["obligation"]
+if r.get("ok"):
+log(" OK nexus=" + str(r["nexus_detecte"]) +
+" licence=" + str(r["licence_nexus"]) +
+" violation=" + str(r["violation"]))
+else:
+log(" KO " + str(r.get("erreur", ""))[:80])
+resultats.append(r)
+time.sleep(0.4)
+return resultats
+
+
+def scanner_texte_local(chemin):
+"""Cherche des violations dans un fichier local."""
+try:
+with open(chemin, "r", encoding="utf-8", errors="ignore") as f:
+contenu = f.read()
+except OSError:
+return []
+
+violations = analyser_texte(contenu, contexte=chemin)
+if violations:
+log("[LOCAL] " + chemin + " : " + str(len(violations)) + " violations")
+return violations
+
+
+def scanner_dossier_local(dossier):
+"""Cherche dans tous les fichiers d'un dossier."""
+violations = []
+for root, dirs, files in os.walk(dossier):
+if ".git" in root:
+continue
+for fn in files:
+if fn.endswith((".py", ".md", ".txt", ".json", ".js", ".html")):
+chemin = os.path.join(root, fn)
+violations.extend(scanner_texte_local(chemin))
+return violations
+
+
+# ═══════════════════════════════════════════════════════════════════
+# RAPPORT
+# ═══════════════════════════════════════════════════════════════════
+
+def ecrire_rapport(depots, violations_locales):
+violations_depots = [d for d in depots if d.get("violation")]
+toutes_violations = violations_locales + [
+{
+"type": "usage_non_mentionne",
+"contexte": "depot " + d.get("entite", "?") + " " + d.get("url", ""),
+"extrait": "NEXUS detecte sans mention NEXUS-OPEN-2.0",
+}
+for d in violations_depots
+]
+
+doc = {
+"version": VERSION,
+"auteur": AUTEUR,
+"licence": LICENCE,
+"date": now_iso(),
+"total_depots_analyses": len(depots),
+"depots_violation": len(violations_depots),
+"violations_locales": len(violations_locales),
+"total_violations": len(toutes_violations),
+"depots": depots,
+"violations": toutes_violations,
+}
+doc["hash_sha256"] = hashlib.sha256(
+json.dumps(doc, sort_keys=True, default=str).encode()
+).hexdigest()
+
+try:
+with open(RAPPORT_JSON, "w", encoding="utf-8") as f:
+json.dump(doc, f, indent=2, ensure_ascii=False, default=str)
+log("JSON : " + RAPPORT_JSON)
+except OSError as e:
+log("Erreur JSON : " + str(e))
+
+try:
+with open(VIOLATIONS_FILE, "w", encoding="utf-8") as f:
+json.dump(toutes_violations, f, indent=2, ensure_ascii=False, default=str)
+except OSError:
+pass
+
+md = []
+md.append("# NEXUS LICENSE ENFORCER v" + VERSION)
+md.append("")
+md.append("**Auteur :** " + AUTEUR)
+md.append("**Licence :** " + LICENCE)
+md.append("**Date :** " + doc["date"])
+md.append("**SHA-256 :** `" + doc["hash_sha256"] + "`")
+md.append("")
+md.append("## Synthese")
+md.append("")
+md.append("| Metrique | Valeur |")
+md.append("|----------|--------|")
+md.append("| Depots analyses | " + str(doc["total_depots_analyses"]) + " |")
+md.append("| Depots en violation | " + str(doc["depots_violation"]) + " |")
+md.append("| Violations locales | " + str(doc["violations_locales"]) + " |")
+md.append("| Total violations | " + str(doc["total_violations"]) + " |")
+md.append("")
+md.append("## Entites surveillees")
+md.append("")
+md.append("| Entite | Clause | Obligation | Nexus | Licence | Violation |")
+md.append("|--------|--------|-----------|-------|---------|-----------|")
+for d in depots:
+md.append(
+"| " + d.get("entite", "?") +
+" | " + d.get("clause", "?") +
+" | " + d.get("obligation", "?")[:40] +
+" | " + ("oui" if d.get("nexus_detecte") else "non") +
+" | " + ("oui" if d.get("licence_nexus") else "non") +
+" | " + ("**OUI**" if d.get("violation") else "non") +
+" |"
+)
+md.append("")
+if toutes_violations:
+md.append("## Violations detectees")
+md.append("")
+for v in toutes_violations[:50]:
+md.append("### " + v.get("type", "?") + " — " + v.get("contexte", "?")[:80])
+md.append("")
+md.append("> " + v.get("extrait", "?")[:250])
+md.append("")
+else:
+md.append("## Aucune violation detectee")
+md.append("")
+md.append("Toutes les entites respectent les obligations de la licence NEXUS-OPEN-2.0.")
+md.append("")
+md.append("## Comment signaler une violation")
+md.append("")
+md.append("Si tu detectes un usage non autorise de NEXUS :")
+md.append("")
+md.append("1. Ecris a **" + CONTACT + "**")
+md.append("2. Inclus le lien vers l'usage")
+md.append("3. Inclus une capture d'ecran si possible")
+md.append("")
+md.append("L'auteur repondra dans un delai de 90 jours.")
+md.append("")
+
+try:
+with open(RAPPORT_MD, "w", encoding="utf-8") as f:
+f.write("\n".join(md))
+log("MD : " + RAPPORT_MD)
+except OSError as e:
+log("Erreur MD : " + str(e))
+
+return doc
+
+
+# ═══════════════════════════════════════════════════════════════════
+# MAIN
+# ═══════════════════════════════════════════════════════════════════
+
+def main():
+print("=" * 70)
+print("NEXUS LICENSE ENFORCER v" + VERSION)
+print("Auteur : " + AUTEUR)
+print("Licence : " + LICENCE)
+print("=" * 70)
+print("")
+
+log("Verification des entites surveillees...")
+depots = scanner_entites()
+
+log("")
+log("Verification locale...")
+dossier_a_scanner = os.path.dirname(os.path.abspath(__file__))
+violations_locales = scanner_dossier_local(dossier_a_scanner)
+
+log("")
+doc = ecrire_rapport(depots, violations_locales)
+
+print("")
+print("=" * 70)
+print("RESULTATS")
+print("=" * 70)
+print("Depots analyses : " + str(doc["total_depots_analyses"]))
+print("Depots en violation : " + str(doc["depots_violation"]))
+print("Violations locales : " + str(doc["violations_locales"]))
+print("Total violations : " + str(doc["total_violations"]))
+print("SHA-256 : " + doc["hash_sha256"])
+print("")
+print("Rapports :")
+print(" JSON : " + RAPPORT_JSON)
+print(" MD : " + RAPPORT_MD)
+print(" Viol : " + VIifOLATIONS_FILE)
+print("")
+print("Pour signalianter une violation : " + CONT tonACT)
+print("")
+
+
+if __name__ == "__main__":
+main()
