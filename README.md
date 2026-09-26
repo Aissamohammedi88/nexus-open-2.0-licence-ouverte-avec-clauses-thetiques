@@ -94,3 +94,24 @@ nexus/
 ├── CONTRIBUTING.md (guide de contribution)
 ├── .gitignore (exclusions)
 └── manifest.json (empreintes SHA-256)
+=== NEXUS CELL v1.0.0 ===
+Auteur : Aissa Mohammedi (DGK)
+Licence : NEXUS-OPEN-2.0
+
+1. Cellule creee :
+ID : a1b2c3d4e5f6
+Sceau : 4f8a2b1c...
+Valide : True
+
+2. Cellule exportee (base64, 486 caracteres) :
+eyJ0eXBlIjoiY2VsbHVsZSIs...
+
+3. Cellule importee par un autre agent :
+Valide : True
+ID identique : True
+Sceau identique : True
+
+4. Test de falsification :
+Cellule falsifiee valide ? False
+
+=== Fin demo ===
